@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   width="200"
+					   height="500"
+					   creationComplete="Main()">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<s:Panel id="mainPanelTitle"
+			 width="100%"
+			 height="100%">
+		<s:VGroup horizontalAlign="center"
+				  width="100%">
+			
+			<s:HGroup width="100%"
+					  horizontalAlign="right"
+					  paddingRight="10">
+				<s:Label id="minBtn"
+						 text="-"
+						 fontSize="14"
+						 fontWeight="bold"
+						 paddingTop="10"/>
+				<s:Label id="closeBtn"
+						 text="×"
+						 fontSize="14"
+						 fontWeight="bold"
+						 paddingTop="10"/>
+			</s:HGroup>
+			
+			<s:Label text="选择提醒时长"/>
+			<s:ComboBox id="cb"
+						
+						width="70"
+						y="100"
+						selectedIndex="0"
+						labelField="label"
+						/><!-- dataProvider="{timeSelect}"   close="cbHandler(event)" -->
+			
+			<s:Label id="flashingLabel"
+					 fontSize="14"
+					 paddingBottom="10"
+					 paddingTop="10"
+					 color="#ff3300"/>
+			
+			<s:Group id="picContainer">
+				<mx:Image id="picContent"
+						  source="assets/fullscreen.jpg"
+						  width="200"
+						  height="206"/>
+			</s:Group>
+			
+			
+			<s:Label id="countLabel"
+					 paddingBottom="50"/>
+			
+			<s:CheckBox id="startAtLoginCB"
+						label="开机启动"
+						/><!-- click="startAtLoginCBClickHandler(event)" -->
+			
+			<s:Button id="confirmBtn"
+					  label="确定"
+					  /><!-- click="confirmBtnHandler(event)" -->
+			<s:Button id="resetBtn"
+					  label="重置"
+					  /><!-- click="resetBtnHandler(event)" -->
+			
+		</s:VGroup>
+		
+		
+		
+		
+	</s:Panel>
+	
+	
+	
+	
+	<fx:Script source="com/yf/alarm/Main.as"/>
+
+	
+</s:WindowedApplication>
