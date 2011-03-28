@@ -7,6 +7,11 @@ package com.yf.alarm.statics
 		//events
 		static public var CHANGE_MINUTE:String = "change_minute";
 		static public var CHANGE_SECOND:String = "change_second";
+		static public var CHANGE_APPSTATUS:String = "change_appstatus";
+		static public var CHANGE_TIME_TEXT:String = "change_time_text";
+		
+		
+		static public var CLOSE_WINDOW:String = "CLOSE_WINDOW";
 		
 		
 		//下拉菜单
@@ -19,8 +24,28 @@ package com.yf.alarm.statics
 		];
 		
 		
+		//计时 提示
+		static public var countTextInit:String = "00:00";
+		static public var flashingText:String = "该活动活动脖子啦~~";
+		static public var selectTimeFailAlert:String = "选择时间错误!";
+		
+		//显示名称
+		static public var timeAlarmTitle:String = "Time Alarm Beta";//程序名称
 		
 		
+		//systray menu
+		static public var menuItemOpen:String = "打开";
+		static public var menuItemExit:String = "退出";
+		static public var menuItemAbout:String = "关于";
+		
+		static public var menuOpen:String = "menu_open";
+		static public var menuExit:String = "menu_exit";
+		static public var menuAbout:String = "menu_about";
+		static public var menuSeparator:String = "menu_separator";
+		
+		//about me
+		static public var aboutMain:String = "关于Time Alarm 0.1.0.1103_beta";
+		static public var aboutMail:String = "yangfan1122@gmail.com";
 		
 		
 		

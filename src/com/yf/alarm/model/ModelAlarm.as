@@ -1,5 +1,6 @@
 package com.yf.alarm.model
 {
+	import com.yf.alarm.Test;
 	import com.yf.alarm.statics.Statics;
 	
 	import flash.events.Event;
@@ -10,10 +11,19 @@ package com.yf.alarm.model
 		private var _minute:String;
 		private var _second:String;
 		
+		/**
+		 * 四个状态:
+		 * 0初始，1准备，2计数，3闪动
+		 */ 
+		private var _appStatus:int;
+		
+		private var _timeText:String;
+		
 		public function ModelAlarm()
 		{
 		}
 		
+		//倒计时 ??
 		public function get minute():String
 		{
 			return _minute;
@@ -32,8 +42,37 @@ package com.yf.alarm.model
 		{
 			_second = _sec;
 			dispatchEvent(new Event(Statics.CHANGE_SECOND));
-			
 		}
+		
+		//显示倒计时
+		public function get timeText():String
+		{
+			return _timeText;
+		}
+		public function set timeText(_tt:String):void
+		{
+			_timeText = _tt;
+			dispatchEvent(new Event(Statics.CHANGE_TIME_TEXT));
+		}
+		
+		
+		//app状态
+		public function get appStatus():int
+		{
+			return _appStatus;
+		}
+		public function set appStatus(_status:int):void
+		{
+			this._appStatus = _status;
+			dispatchEvent(new Event(Statics.CHANGE_APPSTATUS));
+		}
+		
+		
+		
+		
+		
+		
+		
 		
 	}
 }

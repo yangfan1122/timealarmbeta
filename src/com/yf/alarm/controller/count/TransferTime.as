@@ -1,4 +1,4 @@
-﻿package com.yf.alarm.count
+﻿package com.yf.alarm.controller.count
 {
 	public class TransferTime
 	{ //秒转分
