@@ -85,6 +85,8 @@ package com.yf.alarm.view
 			
 			_modelAlarm.addEventListener(Statics.CHANGE_TIME_TEXT, timeTextHandler);//显示倒计时
 			
+			_thisApp.nativeWindow.addEventListener(Event.RESIZE, resizeHandler);//监听全屏变化
+			
 		}
 		private function addObjects():void
 		{
@@ -187,7 +189,7 @@ package com.yf.alarm.view
 				
 				case 3:
 					flash();
-					if(_thisApp.picContainer.numElements>0)_thisApp.picContainer.removeElement(_thisApp.picContent);
+					if(_thisApp.picContainer.numElements<1)_thisApp.picContainer.addElement(_thisApp.picContent);
 					break;
 				
 				default:
@@ -198,16 +200,17 @@ package com.yf.alarm.view
 		
 		private function iconDispatcher(_ico:int):void //ico状态变化处理函数
 		{
+			//Test.a(_ico);
 			switch(_ico){
 				case 0:
-					_thisApp.nativeApplication.icon.bitmaps=[new icon1()];
+					_thisApp.nativeApplication.icon.bitmaps=[new icon()];
 					timerCounter=1;
-					_thisApp.flashingLabel.text=Statics.flashingText;
+					_thisApp.flashingLabel.text="";
 					break;
 				case 1:
-					_thisApp.nativeApplication.icon.bitmaps=[new icon()];
+					_thisApp.nativeApplication.icon.bitmaps=[new icon1()];
 					timerCounter=0;
-					_thisApp.flashingLabel.text="";
+					_thisApp.flashingLabel.text=Statics.flashingText;
 					break;
 				default:
 					break;
@@ -279,7 +282,7 @@ package com.yf.alarm.view
 			_controllerAlarm.cbSelect(timeDelay);// --> C
 		}
 		
-		private function calculagraph():void
+		private function calculagraph():void //计时
 		{
 			/*
 			timerShowCounter=timeDelay;
@@ -323,17 +326,16 @@ package com.yf.alarm.view
 			if(_thisApp.picContainer.numElements>0)_thisApp.picContainer.removeElement(_thisApp.picContent);
 			*/
 			
-			_controllerAlarm.flashTimer();
+			
 			
 			_modelAlarm.addEventListener(Statics.CHANGE_ICON, iconHandler);
+			//_modelAlarm.removeEventListener(Statics.CHANGE_ICON, iconHandler);
+			_controllerAlarm.flashTimer();
 			
 		}
 		private function iconHandler(event:Event):void
 		{
-			_modelAlarm.removeEventListener(Statics.CHANGE_ICON, iconHandler);
-			
 			iconDispatcher(_modelAlarm.icon);
-			
 		}
 		private function resizeHandler(event:Event):void //全屏变化处理
 		{

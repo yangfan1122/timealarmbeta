@@ -77,6 +77,7 @@ package com.yf.alarm.model
 		public function set icon(_ico:int):void
 		{
 			_icon = _ico;
+			dispatchEvent(new Event(Statics.CHANGE_ICON));
 		}
 		
 		

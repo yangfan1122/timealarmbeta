@@ -39,6 +39,8 @@ package com.yf.alarm.controller
 		
 		public function calculagraphCtrl(_timeDelay:int):void
 		{
+			_modelAlarm.appStatus = 2;//计数
+			
 			timerShowCounter = _timeDelay;
 			timerShow.addEventListener(TimerEvent.TIMER, timerShowHandler);
 			timerShow.start();
@@ -74,8 +76,6 @@ package com.yf.alarm.controller
 		//闪动
 		public function flashTimer():void
 		{
-			_modelAlarm.appStatus = 3;
-			
 			timer.addEventListener(TimerEvent.TIMER, timerCompleteHandler);
 			timer.start();//闪动
 		}
@@ -83,11 +83,11 @@ package com.yf.alarm.controller
 		{
 			if (timerCounter == 1)
 			{
-				_modelAlarm.icon = 0;
+				_modelAlarm.icon = timerCounter = 0;
 			}
 			else if (timerCounter == 0)
 			{
-				_modelAlarm.icon = 1;
+				_modelAlarm.icon = timerCounter = 1;
 			}
 			timer.start();
 		}
