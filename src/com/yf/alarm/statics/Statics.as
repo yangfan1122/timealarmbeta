@@ -9,6 +9,7 @@ package com.yf.alarm.statics
 		static public var CHANGE_SECOND:String = "change_second";
 		static public var CHANGE_APPSTATUS:String = "change_appstatus";
 		static public var CHANGE_TIME_TEXT:String = "change_time_text";
+		static public var CHANGE_ICON:String = "change_icon";
 		
 		
 		static public var CLOSE_WINDOW:String = "CLOSE_WINDOW";

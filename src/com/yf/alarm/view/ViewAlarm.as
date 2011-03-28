@@ -81,7 +81,7 @@ package com.yf.alarm.view
 			
 			_thisApp.cb.addEventListener(Event.CLOSE, cbHandler);
 			
-			_modelAlarm.addEventListener(Statics.CHANGE_APPSTATUS, cbSelectContent);//cb选定
+			_modelAlarm.addEventListener(Statics.CHANGE_APPSTATUS, statusDispatcher);//app状态处理函数
 			
 			_modelAlarm.addEventListener(Statics.CHANGE_TIME_TEXT, timeTextHandler);//显示倒计时
 			
@@ -149,7 +149,6 @@ package com.yf.alarm.view
 		}
 		private function chooseStyles(_status:int):void
 		{
-			Test.a(_status);
 			switch(_status){
 				case 0:
 					initializationStyle();
@@ -171,10 +170,50 @@ package com.yf.alarm.view
 			}
 		}
 		
-		private function statusDispacher():void //!!
+		private function statusDispatcher(event:Event):void //app状态变化处理函数 
 		{
-			
+			var _status:int = _modelAlarm.appStatus;
+			switch(_status){
+				case 0:
+					
+					break;
+				case 1:
+					
+					break;
+				
+				case 2:
+					
+					break;
+				
+				case 3:
+					flash();
+					if(_thisApp.picContainer.numElements>0)_thisApp.picContainer.removeElement(_thisApp.picContent);
+					break;
+				
+				default:
+					break;
+			}
+			chooseStyles(_status);
 		}
+		
+		private function iconDispatcher(_ico:int):void //ico状态变化处理函数
+		{
+			switch(_ico){
+				case 0:
+					_thisApp.nativeApplication.icon.bitmaps=[new icon1()];
+					timerCounter=1;
+					_thisApp.flashingLabel.text=Statics.flashingText;
+					break;
+				case 1:
+					_thisApp.nativeApplication.icon.bitmaps=[new icon()];
+					timerCounter=0;
+					_thisApp.flashingLabel.text="";
+					break;
+				default:
+					break;
+			}
+		}
+		
 		
 		// //styles
 		
@@ -239,11 +278,6 @@ package com.yf.alarm.view
 			timeDelay = ComboBox(event.target).selectedItem.data; //秒
 			_controllerAlarm.cbSelect(timeDelay);// --> C
 		}
-		private function cbSelectContent(event:Event):void 
-		{
-			chooseStyles(_modelAlarm.appStatus);// <-- M
-		}
-		
 		
 		private function calculagraph():void
 		{
@@ -280,44 +314,36 @@ package com.yf.alarm.view
 		//闪动
 		private function flash():void
 		{
+			/*
 			flashingStyle();
 			
 			timer.addEventListener(TimerEvent.TIMER, timerCompleteHandler);
 			timer.start();//闪动
 			
 			if(_thisApp.picContainer.numElements>0)_thisApp.picContainer.removeElement(_thisApp.picContent);
+			*/
+			
+			_controllerAlarm.flashTimer();
+			
+			_modelAlarm.addEventListener(Statics.CHANGE_ICON, iconHandler);
+			
 		}
-		
-		private function timerCompleteHandler(event:TimerEvent):void
+		private function iconHandler(event:Event):void
 		{
-			if (timerCounter == 1)
-			{
-				_thisApp.nativeApplication.icon.bitmaps=[new icon()];
-				timerCounter=0;
-				
-				_thisApp.flashingLabel.text="";
-			}
-			else if (timerCounter == 0)
-			{
-				_thisApp.nativeApplication.icon.bitmaps=[new icon1()];
-				timerCounter=1;
-				
-				_thisApp.flashingLabel.text=Statics.flashingText;
-			}
-			timer.start();
+			_modelAlarm.removeEventListener(Statics.CHANGE_ICON, iconHandler);
+			
+			iconDispatcher(_modelAlarm.icon);
+			
 		}
-		
 		private function resizeHandler(event:Event):void //全屏变化处理
 		{
-			
 			//窗口宽，判断是否全屏用
 			var screenWidth:int;
-			for each (var screen:Screen in Screen.screens)screenWidth=screen.bounds.width;
-			
-			
+			for each (var screen:Screen in Screen.screens)screenWidth = screen.bounds.width;
+				
 			if (this.stage.nativeWindow.width == screenWidth) //全屏
 			{ 
-				_thisApp.flashingLabel.scaleX=_thisApp.flashingLabel.scaleY=5;
+				_thisApp.flashingLabel.scaleX = _thisApp.flashingLabel.scaleY=5;
 				_thisApp.nativeWindow.orderToFront();
 			}
 			else //非全屏

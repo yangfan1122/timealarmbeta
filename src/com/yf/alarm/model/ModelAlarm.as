@@ -18,6 +18,7 @@ package com.yf.alarm.model
 		private var _appStatus:int;
 		
 		private var _timeText:String;
+		private var _icon:int;
 		
 		public function ModelAlarm()
 		{
@@ -68,7 +69,15 @@ package com.yf.alarm.model
 		}
 		
 		
-		
+		//图标闪动
+		public function get icon():int
+		{
+			return _icon;
+		}
+		public function set icon(_ico:int):void
+		{
+			_icon = _ico;
+		}
 		
 		
 		

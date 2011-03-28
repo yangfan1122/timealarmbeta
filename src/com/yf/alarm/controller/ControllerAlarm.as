@@ -14,7 +14,8 @@ package com.yf.alarm.controller
 		private var _modelAlarm:ModelAlarm;
 		private var timerShow:Timer=new Timer(1000); //显示计时
 		private var timerShowCounter:int=0; //计时计数器
-		
+		private var timer:Timer=new Timer(500); //闪动频率
+		private var timerCounter:int=0; //闪动标记
 		
 		
 		public function ControllerAlarm(_ma:ModelAlarm)
@@ -50,8 +51,7 @@ package com.yf.alarm.controller
 			if (timerShowCounter == 0)
 			{
 				timerShow.stop();
-				//flash(); //开始提醒
-				_modelAlarm.appStatus = 3;
+				_modelAlarm.appStatus = 3;//闪动
 			}
 		}
 			
@@ -71,7 +71,28 @@ package com.yf.alarm.controller
 		
 		
 		
+		//闪动
+		public function flashTimer():void
+		{
+			_modelAlarm.appStatus = 3;
+			
+			timer.addEventListener(TimerEvent.TIMER, timerCompleteHandler);
+			timer.start();//闪动
+		}
+		private function timerCompleteHandler(event:TimerEvent):void
+		{
+			if (timerCounter == 1)
+			{
+				_modelAlarm.icon = 0;
+			}
+			else if (timerCounter == 0)
+			{
+				_modelAlarm.icon = 1;
+			}
+			timer.start();
+		}
 		
+		// //闪动
 		
 		
 		
