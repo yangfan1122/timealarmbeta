@@ -18,12 +18,11 @@ package com.yf.alarm.view
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	
+	import spark.components.CheckBox;
 	import spark.components.ComboBox;
 
 	public class ViewAlarm extends Sprite
@@ -42,10 +41,7 @@ package com.yf.alarm.view
 		
 		private var aboutme:Aboutme=new Aboutme();
 		private var timeDelay:int=-1; //选定的延迟时间
-		private var timer:Timer=new Timer(500); //闪动频率
-		private var timerShow:Timer=new Timer(1000); //显示计时
-		private var timerShowCounter:int=0; //计时计数器
-		
+
 		
 		public function ViewAlarm(_this:Object, _modelalarm:ModelAlarm, _controlleralarm:ControllerAlarm)
 		{
@@ -64,8 +60,26 @@ package com.yf.alarm.view
 		}
 		private function styles():void
 		{
+			//窗口初始位置
+			var screenWidth:int;
+			var screenHeight:int;
+			for each (var screen:Screen in Screen.screens)
+			{
+				screenWidth=screen.bounds.width;
+				screenHeight=screen.bounds.height;
+			}
+			_thisApp.nativeWindow.x=screenWidth * Statics.positionPer;
+			_thisApp.nativeWindow.y=(screenHeight - _thisApp.nativeWindow.height) / 2;
+			
+			//系统托盘、最小化按钮、关闭按钮提示
+			_thisApp.mainPanelTitle.title = Statics.timeAlarmTitle;
+			_thisApp.minBtn.toolTip = Statics.minBtnToolTip;
+			_thisApp.closeBtn.toolTip = Statics.closenBtnToolTip;
+			
+			//下拉菜单选项
 			_thisApp.cb.dataProvider = new ArrayCollection(Statics.timeSelectCollectionData);
 			
+			//初始化样式
 			initializationStyle();
 			
 		}
@@ -73,20 +87,12 @@ package com.yf.alarm.view
 		{
 			_thisApp.addEventListener(MouseEvent.MOUSE_DOWN, dragHandler); //窗口拖拽
 			
-			_thisApp.confirmBtn.addEventListener(MouseEvent.CLICK, confirmBtnHandler);
-			_thisApp.resetBtn.addEventListener(MouseEvent.CLICK, resetBtnHandler);
-			
-			_thisApp.minBtn.addEventListener(MouseEvent.CLICK, minBtnHandler);
-			_thisApp.closeBtn.addEventListener(MouseEvent.CLICK, closeBtnHandler);
-			
-			_thisApp.cb.addEventListener(Event.CLOSE, cbHandler);
+			_thisApp.minBtn.addEventListener(MouseEvent.CLICK, minBtnHandler);//最小化按钮
+			_thisApp.closeBtn.addEventListener(MouseEvent.CLICK, closeBtnHandler);//关闭按钮
+			_thisApp.startAtLoginCB.addEventListener(MouseEvent.CLICK, startAtLoginCBClickHandler);//开机启动
+			_thisApp.cb.addEventListener(Event.CLOSE, cbHandler);//菜单
 			
 			_modelAlarm.addEventListener(Statics.CHANGE_APPSTATUS, statusDispatcher);//app状态处理函数
-			
-			_modelAlarm.addEventListener(Statics.CHANGE_TIME_TEXT, timeTextHandler);//显示倒计时
-			
-			_thisApp.nativeWindow.addEventListener(Event.RESIZE, resizeHandler);//监听全屏变化
-			
 		}
 		private function addObjects():void
 		{
@@ -144,8 +150,7 @@ package com.yf.alarm.view
 			
 			undockHandler();
 			
-			//全屏
-			_thisApp.stage.displayState=StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			_thisApp.stage.displayState=StageDisplayState.FULL_SCREEN_INTERACTIVE;//全屏
 			
 			_thisApp.nativeWindow.orderToFront();
 		}
@@ -172,22 +177,34 @@ package com.yf.alarm.view
 			}
 		}
 		
+		/**
+		 * 四个状态:
+		 * 0初始，1准备，2计数，3闪动
+		 */ 
 		private function statusDispatcher(event:Event):void //app状态变化处理函数 
 		{
 			var _status:int = _modelAlarm.appStatus;
 			switch(_status){
 				case 0:
-					
+					_thisApp.resetBtn.removeEventListener(MouseEvent.CLICK, resetBtnHandler);
+					_thisApp.nativeWindow.removeEventListener(Event.RESIZE, resizeHandler);//监听全屏变化
+					_thisApp.cb.addEventListener(Event.CLOSE, cbHandler);
 					break;
 				case 1:
-					
+					_thisApp.confirmBtn.addEventListener(MouseEvent.CLICK, confirmBtnHandler);
 					break;
 				
 				case 2:
-					
+					_thisApp.confirmBtn.removeEventListener(MouseEvent.CLICK, confirmBtnHandler);
+					_thisApp.cb.removeEventListener(Event.CLOSE, cbHandler);
+					_thisApp.resetBtn.addEventListener(MouseEvent.CLICK, resetBtnHandler);
+					_modelAlarm.addEventListener(Statics.CHANGE_TIME_TEXT, timeTextHandler);//显示倒计时
 					break;
 				
 				case 3:
+					_modelAlarm.removeEventListener(Statics.CHANGE_TIME_TEXT, timeTextHandler);//显示倒计时
+					_thisApp.nativeWindow.addEventListener(Event.RESIZE, resizeHandler);//监听全屏变化
+					
 					flash();
 					if(_thisApp.picContainer.numElements<1)_thisApp.picContainer.addElement(_thisApp.picContent);
 					break;
@@ -200,7 +217,6 @@ package com.yf.alarm.view
 		
 		private function iconDispatcher(_ico:int):void //ico状态变化处理函数
 		{
-			//Test.a(_ico);
 			switch(_ico){
 				case 0:
 					_thisApp.nativeApplication.icon.bitmaps=[new icon()];
@@ -221,7 +237,7 @@ package com.yf.alarm.view
 		// //styles
 		
 		//btns
-		private function dragHandler(event:MouseEvent):void
+		private function dragHandler(event:MouseEvent):void //拖拽
 		{
 			_thisApp.stage.nativeWindow.startMove();
 		}
@@ -236,23 +252,11 @@ package com.yf.alarm.view
 			{
 				calculagraph();
 			}
-			
-			chooseStyles(_modelAlarm.appStatus);
 		}
 		private function resetBtnHandler(event:MouseEvent):void //重置按钮
 		{
-			/*
-			timer.stop();//闪动
-			
-			timerShow.stop();
-			timerShowCounter=0;
-			
-			//取消全屏
-			stage.displayState=StageDisplayState.NORMAL;
-			
-			initializationStyle();
-			*/
-			
+			_thisApp.stage.displayState=StageDisplayState.NORMAL;//取消全屏
+			_modelAlarm.removeEventListener(Statics.CHANGE_ICON, iconHandler);
 			_controllerAlarm.resetHandler();
 		}
 		private function minBtnHandler(event:MouseEvent):void //最小化按钮
@@ -268,9 +272,7 @@ package com.yf.alarm.view
 		{
 			exitHandler();
 		}
-		
-		
-		
+
 		// //btns
 		
 
@@ -284,26 +286,8 @@ package com.yf.alarm.view
 		
 		private function calculagraph():void //计时
 		{
-			/*
-			timerShowCounter=timeDelay;
-			timerShow.addEventListener(TimerEvent.TIMER, timerShowHandler);
-			timerShow.start();
-			*/
 			_controllerAlarm.calculagraphCtrl(timeDelay);
 		}
-		/*
-		private function timerShowHandler(event:TimerEvent):void
-		{
-			timerShowCounter-=1;
-			_thisApp.countLabel.text=TransferTime.transferTimeHandler(timerShowCounter * 1000);
-			
-			if (timerShowCounter == 0)
-			{
-				timerShow.stop();
-				flash(); //开始提醒
-			}
-		}
-		*/
 		private function timeTextHandler(event:Event):void
 		{
 			_thisApp.countLabel.text = _modelAlarm.timeText;
@@ -317,21 +301,8 @@ package com.yf.alarm.view
 		//闪动
 		private function flash():void
 		{
-			/*
-			flashingStyle();
-			
-			timer.addEventListener(TimerEvent.TIMER, timerCompleteHandler);
-			timer.start();//闪动
-			
-			if(_thisApp.picContainer.numElements>0)_thisApp.picContainer.removeElement(_thisApp.picContent);
-			*/
-			
-			
-			
 			_modelAlarm.addEventListener(Statics.CHANGE_ICON, iconHandler);
-			//_modelAlarm.removeEventListener(Statics.CHANGE_ICON, iconHandler);
 			_controllerAlarm.flashTimer();
-			
 		}
 		private function iconHandler(event:Event):void
 		{
@@ -342,17 +313,17 @@ package com.yf.alarm.view
 			//窗口宽，判断是否全屏用
 			var screenWidth:int;
 			for each (var screen:Screen in Screen.screens)screenWidth = screen.bounds.width;
-				
-			if (this.stage.nativeWindow.width == screenWidth) //全屏
+			if (_thisApp.stage.nativeWindow.width == screenWidth) //全屏
 			{ 
 				_thisApp.flashingLabel.scaleX = _thisApp.flashingLabel.scaleY=5;
 				_thisApp.nativeWindow.orderToFront();
+				_thisApp.removeEventListener(MouseEvent.MOUSE_DOWN, dragHandler); //窗口拖拽
 			}
 			else //非全屏
 			{ 
 				_thisApp.flashingLabel.scaleX=_thisApp.flashingLabel.scaleY=1;
+				_thisApp.addEventListener(MouseEvent.MOUSE_DOWN, dragHandler); //窗口拖拽
 			}
-			
 		}
 		
 		// //闪动
@@ -420,8 +391,6 @@ package com.yf.alarm.view
 			
 		}
 		
-		
-		
 		private function undockHandler():void //从系统托盘恢复到任务栏
 		{
 			_thisApp.nativeWindow.visible=true;
@@ -457,14 +426,50 @@ package com.yf.alarm.view
 		// //关于
 		
 		
+		//setting
+		//开机启动
+		private function startAtLoginCBClickHandler(event:MouseEvent):void //点击CheckBox
+		{
+			_modelAlarm.addEventListener(Statics.SAVE_SETTING_SUCCESS, saveSettingSuccessHandler);
+			
+			if (CheckBox(event.target).selected)
+			{
+				_controllerAlarm.startAtLoginCtrl(true);
+			}
+			else
+			{
+				_controllerAlarm.startAtLoginCtrl(false);
+			}
+		}
+		private function saveSettingSuccessHandler(event:Event):void //保存结果
+		{
+			var tmp:Boolean = _modelAlarm.saveSuccess;
+			if(tmp) 
+			{
+				//保存成功
+				setStartAtLogin();
+			}
+			else 
+			{
+				//保存失败
+				Alert.show(Statics.setttingSaveFail);
+			}
+			
+			_modelAlarm.removeEventListener(Statics.SAVE_SETTING_SUCCESS, saveSettingSuccessHandler);
 		
-		
-		
-		
-		
-		
-		
-		
+		}
+		private function setStartAtLogin():void //设置开机启动
+		{
+			if (_modelAlarm.startAtLogin)
+			{
+				NativeApplication.nativeApplication.startAtLogin = true;
+			}
+			else
+			{
+				NativeApplication.nativeApplication.startAtLogin = false;
+			}
+		}
+		// //setting
 		
 		
 	}

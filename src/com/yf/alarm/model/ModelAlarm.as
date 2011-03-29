@@ -8,9 +8,6 @@ package com.yf.alarm.model
 	
 	public class ModelAlarm extends EventDispatcher
 	{
-		private var _minute:String;
-		private var _second:String;
-		
 		/**
 		 * 四个状态:
 		 * 0初始，1准备，2计数，3闪动
@@ -19,31 +16,14 @@ package com.yf.alarm.model
 		
 		private var _timeText:String;
 		private var _icon:int;
+		private var _startAtLogin:Boolean;//启动否
+		private var _saveSuccess:Boolean;//保存存成功
 		
 		public function ModelAlarm()
 		{
 		}
 		
-		//倒计时 ??
-		public function get minute():String
-		{
-			return _minute;
-		}
-		public function set minute(_min:String):void
-		{
-			_minute = _min;
-			dispatchEvent(new Event(Statics.CHANGE_MINUTE));
-		}
-		
-		public function get second():String
-		{
-			return _second;
-		}
-		public function set second(_sec:String):void
-		{
-			_second = _sec;
-			dispatchEvent(new Event(Statics.CHANGE_SECOND));
-		}
+
 		
 		//显示倒计时
 		public function get timeText():String
@@ -79,6 +59,27 @@ package com.yf.alarm.model
 			_icon = _ico;
 			dispatchEvent(new Event(Statics.CHANGE_ICON));
 		}
+		
+		
+		//开机启动
+		public function get startAtLogin():Boolean
+		{
+			return _startAtLogin;
+		}
+		public function set startAtLogin(_sal:Boolean):void
+		{
+			_startAtLogin = _sal;
+		}
+		public function get saveSuccess():Boolean
+		{
+			return _saveSuccess;	
+		}
+		public function set saveSuccess(_ss:Boolean):void
+		{
+			_saveSuccess = _ss;
+			dispatchEvent(new Event(Statics.SAVE_SETTING_SUCCESS));
+		}
+		
 		
 		
 		

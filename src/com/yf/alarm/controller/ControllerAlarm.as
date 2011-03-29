@@ -6,8 +6,11 @@ package com.yf.alarm.controller
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.NetStatusEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	import flash.net.SharedObject;
+	import flash.net.SharedObjectFlushStatus;
 
 	public class ControllerAlarm
 	{
@@ -16,6 +19,7 @@ package com.yf.alarm.controller
 		private var timerShowCounter:int=0; //计时计数器
 		private var timer:Timer=new Timer(500); //闪动频率
 		private var timerCounter:int=0; //闪动标记
+		private var settingShareObject:SharedObject=SharedObject.getLocal("user-setting"); //保存用户设置
 		
 		
 		public function ControllerAlarm(_ma:ModelAlarm)
@@ -59,15 +63,16 @@ package com.yf.alarm.controller
 			
 		public function resetHandler():void //重置
 		{
+			timer.stop();
+			
 			timerShow.stop();
 			timerShowCounter=0;
 			
 			_modelAlarm.appStatus = 0;
+			
+			timerShow.removeEventListener(TimerEvent.TIMER, timerShowHandler);
+			timer.removeEventListener(TimerEvent.TIMER, timerCompleteHandler);
 		}
-		
-		
-		
-		
 		
 		// //计时
 		
@@ -93,6 +98,71 @@ package com.yf.alarm.controller
 		}
 		
 		// //闪动
+		
+		
+		
+		
+		//开机启动
+		public function startAtLoginCtrl(_startLogin:Boolean):void
+		{
+			settingShareObject.data.userSetting_startAtLogin = _startLogin;
+			saveSetting();
+		}
+		private function saveSetting():void
+		{
+			var flushStatus:String = null;
+			try
+			{
+				flushStatus = settingShareObject.flush(10000);
+			}
+			catch (error:Error)
+			{
+				//Alert.show("Error...Could not write SharedObject to disk\n");
+				_modelAlarm.saveSuccess = false;
+			}
+			if (flushStatus != null)
+			{
+				switch (flushStatus)
+				{
+					case SharedObjectFlushStatus.PENDING:
+						//Alert.show("Requesting permission to save object...\n");
+						settingShareObject.addEventListener(NetStatusEvent.NET_STATUS, onFlushStatus);
+						break;
+					case SharedObjectFlushStatus.FLUSHED:
+						//Alert.show("Value flushed to disk.\n");
+						sendSetting();
+						break;
+				}
+			}
+			
+		}
+		
+		private function onFlushStatus(event:NetStatusEvent):void
+		{
+			//Alert.show("User closed permission dialog...\n");
+			switch (event.info.code)
+			{
+				case "SharedObject.Flush.Success":
+					//Alert.show("User granted permission -- value saved.\n");
+					sendSetting();
+					break;
+				case "SharedObject.Flush.Failed":
+					//Alert.show("User denied permission -- value not saved.\n");
+					_modelAlarm.saveSuccess = false;
+					break;
+			}
+			
+			settingShareObject.removeEventListener(NetStatusEvent.NET_STATUS, onFlushStatus);
+		}
+		
+		private function sendSetting():void //保存设置成功，发送是否启动
+		{
+			_modelAlarm.startAtLogin = settingShareObject.data.userSetting_startAtLogin;
+			_modelAlarm.saveSuccess = true;
+		}
+		
+		// //开机启动
+		
 		
 		
 		
