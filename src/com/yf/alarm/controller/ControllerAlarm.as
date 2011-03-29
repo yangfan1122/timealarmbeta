@@ -88,11 +88,13 @@ package com.yf.alarm.controller
 		{
 			if (timerCounter == 1)
 			{
-				_modelAlarm.icon = timerCounter = 0;
+				_modelAlarm.icon = 0;
+				timerCounter = 0;
 			}
 			else if (timerCounter == 0)
 			{
-				_modelAlarm.icon = timerCounter = 1;
+				_modelAlarm.icon = 1;
+				timerCounter = 1;
 			}
 			timer.start();
 		}

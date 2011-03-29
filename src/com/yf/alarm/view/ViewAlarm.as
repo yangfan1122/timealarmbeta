@@ -19,6 +19,7 @@ package com.yf.alarm.view
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
 	import flash.events.MouseEvent;
+	import flash.events.NativeWindowBoundsEvent;
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
@@ -153,28 +154,6 @@ package com.yf.alarm.view
 			
 			_thisApp.stage.displayState=StageDisplayState.FULL_SCREEN_INTERACTIVE;//全屏
 		}
-		private function chooseStyles(_status:int):void
-		{
-			switch(_status){
-				case 0:
-					initializationStyle();
-					break;
-				case 1:
-					preparativeStyle();
-					break;
-				
-				case 2:
-					countStyle();
-					break;
-				
-				case 3:
-					flashingStyle();
-					break;
-				
-				default:
-					break;
-			}
-		}
 		
 		/**
 		 * 四个状态:
@@ -188,9 +167,13 @@ package com.yf.alarm.view
 					_thisApp.resetBtn.removeEventListener(MouseEvent.CLICK, resetBtnHandler);
 					_thisApp.nativeWindow.removeEventListener(Event.RESIZE, resizeHandler);//监听全屏变化
 					_thisApp.cb.addEventListener(Event.CLOSE, cbHandler);
+					
+					initializationStyle();
 					break;
 				case 1:
 					_thisApp.confirmBtn.addEventListener(MouseEvent.CLICK, confirmBtnHandler);
+					
+					preparativeStyle();
 					break;
 				
 				case 2:
@@ -198,6 +181,8 @@ package com.yf.alarm.view
 					_thisApp.cb.removeEventListener(Event.CLOSE, cbHandler);
 					_thisApp.resetBtn.addEventListener(MouseEvent.CLICK, resetBtnHandler);
 					_modelAlarm.addEventListener(Statics.CHANGE_TIME_TEXT, timeTextHandler);//显示倒计时
+					
+					countStyle();
 					break;
 				
 				case 3:
@@ -205,12 +190,13 @@ package com.yf.alarm.view
 					_thisApp.nativeWindow.addEventListener(Event.RESIZE, resizeHandler);//监听全屏变化
 					
 					flash();
+					
+					flashingStyle();
 					break;
 				
 				default:
 					break;
 			}
-			chooseStyles(_status);
 		}
 		
 		private function iconDispatcher(_ico:int):void //ico状态变化处理函数
@@ -259,7 +245,8 @@ package com.yf.alarm.view
 		}
 		private function minBtnHandler(event:MouseEvent):void //最小化按钮
 		{
-			_thisApp.flashingLabel.scaleX=_thisApp.flashingLabel.scaleY=1;
+			_thisApp.flashingLabel.scaleX = 1;
+			_thisApp.flashingLabel.scaleY = 1;
 			
 			_thisApp.minimize();
 			_thisApp.nativeWindow.visible=false;
@@ -306,21 +293,11 @@ package com.yf.alarm.view
 		}
 		private function resizeHandler(event:Event):void //全屏变化处理
 		{
-			
-			/*
-			[NativeWindowBoundsEvent type="resize" bubbles=false cancelable=false beforeBounds=(x=0, y=0, w=1280, h=1024) afterBounds=(x=0, y=0, w=1280, h=1024)]
-			[NativeWindowBoundsEvent type="resize" bubbles=false cancelable=false beforeBounds=(x=1024, y=262, w=200, h=500) afterBounds=(x=1024, y=262, w=200, h=500)]
-
-			*/
-			//trace(Screen.screens[screen].bounds.width);
-			
-			
 			//窗口宽，判断是否全屏用
-			var screenWidth:int;
-			for each (var screen:Screen in Screen.screens)screenWidth = screen.bounds.width;
-			if (_thisApp.stage.nativeWindow.width == screenWidth) //全屏
+			if ((event as NativeWindowBoundsEvent).afterBounds.width > 200) //全屏
 			{ 
-				_thisApp.flashingLabel.scaleX = _thisApp.flashingLabel.scaleY=5;
+				_thisApp.flashingLabel.scaleX = 5;
+				_thisApp.flashingLabel.scaleY = 5;
 				_thisApp.nativeWindow.orderToFront();
 				_thisApp.removeEventListener(MouseEvent.MOUSE_DOWN, dragHandler); //窗口拖拽
 				
@@ -328,7 +305,8 @@ package com.yf.alarm.view
 			}
 			else //非全屏
 			{ 
-				_thisApp.flashingLabel.scaleX=_thisApp.flashingLabel.scaleY=1;
+				_thisApp.flashingLabel.scaleX = 1;
+				_thisApp.flashingLabel.scaleY = 1;
 				_thisApp.addEventListener(MouseEvent.MOUSE_DOWN, dragHandler); //窗口拖拽
 				
 				if(_thisApp.picContainer.numElements>0)_thisApp.picContainer.removeElement(_thisApp.picContent);
