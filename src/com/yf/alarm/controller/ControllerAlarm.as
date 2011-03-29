@@ -57,6 +57,7 @@ package com.yf.alarm.controller
 			if (timerShowCounter == 0)
 			{
 				timerShow.stop();
+				timerShow.removeEventListener(TimerEvent.TIMER, timerShowHandler);
 				_modelAlarm.appStatus = 3;//闪动
 			}
 		}
@@ -70,7 +71,6 @@ package com.yf.alarm.controller
 			
 			_modelAlarm.appStatus = 0;
 			
-			timerShow.removeEventListener(TimerEvent.TIMER, timerShowHandler);
 			timer.removeEventListener(TimerEvent.TIMER, timerCompleteHandler);
 		}
 		

@@ -17,6 +17,7 @@ package com.yf.alarm.view
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
+	import flash.events.FullScreenEvent;
 	import flash.events.MouseEvent;
 	
 	import mx.collections.ArrayCollection;
@@ -151,8 +152,6 @@ package com.yf.alarm.view
 			undockHandler();
 			
 			_thisApp.stage.displayState=StageDisplayState.FULL_SCREEN_INTERACTIVE;//全屏
-			
-			_thisApp.nativeWindow.orderToFront();
 		}
 		private function chooseStyles(_status:int):void
 		{
@@ -206,7 +205,6 @@ package com.yf.alarm.view
 					_thisApp.nativeWindow.addEventListener(Event.RESIZE, resizeHandler);//监听全屏变化
 					
 					flash();
-					if(_thisApp.picContainer.numElements<1)_thisApp.picContainer.addElement(_thisApp.picContent);
 					break;
 				
 				default:
@@ -265,8 +263,6 @@ package com.yf.alarm.view
 			
 			_thisApp.minimize();
 			_thisApp.nativeWindow.visible=false;
-			
-			if(_thisApp.picContainer.numElements>0)_thisApp.picContainer.removeElement(_thisApp.picContent);
 		}
 		private function closeBtnHandler(event:MouseEvent):void //关闭按钮
 		{
@@ -310,6 +306,15 @@ package com.yf.alarm.view
 		}
 		private function resizeHandler(event:Event):void //全屏变化处理
 		{
+			
+			/*
+			[NativeWindowBoundsEvent type="resize" bubbles=false cancelable=false beforeBounds=(x=0, y=0, w=1280, h=1024) afterBounds=(x=0, y=0, w=1280, h=1024)]
+			[NativeWindowBoundsEvent type="resize" bubbles=false cancelable=false beforeBounds=(x=1024, y=262, w=200, h=500) afterBounds=(x=1024, y=262, w=200, h=500)]
+
+			*/
+			//trace(Screen.screens[screen].bounds.width);
+			
+			
 			//窗口宽，判断是否全屏用
 			var screenWidth:int;
 			for each (var screen:Screen in Screen.screens)screenWidth = screen.bounds.width;
@@ -318,11 +323,15 @@ package com.yf.alarm.view
 				_thisApp.flashingLabel.scaleX = _thisApp.flashingLabel.scaleY=5;
 				_thisApp.nativeWindow.orderToFront();
 				_thisApp.removeEventListener(MouseEvent.MOUSE_DOWN, dragHandler); //窗口拖拽
+				
+				if(_thisApp.picContainer.numElements<1)_thisApp.picContainer.addElement(_thisApp.picContent);
 			}
 			else //非全屏
 			{ 
 				_thisApp.flashingLabel.scaleX=_thisApp.flashingLabel.scaleY=1;
 				_thisApp.addEventListener(MouseEvent.MOUSE_DOWN, dragHandler); //窗口拖拽
+				
+				if(_thisApp.picContainer.numElements>0)_thisApp.picContainer.removeElement(_thisApp.picContent);
 			}
 		}
 		
@@ -370,8 +379,6 @@ package com.yf.alarm.view
 			{
 				_thisApp.minimize();
 				_thisApp.nativeWindow.visible=false;
-				
-				if(_thisApp.picContainer.numElements>0)_thisApp.picContainer.removeElement(_thisApp.picContent);
 			}
 		}
 		private function sysTrayMenuHandler(event:Event):void
