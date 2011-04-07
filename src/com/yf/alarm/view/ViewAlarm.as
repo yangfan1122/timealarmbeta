@@ -159,6 +159,9 @@ package com.yf.alarm.view
 		 * 四个状态:
 		 * 0初始，1准备，2计数，3闪动
 		 */ 
+		/**
+		 * 也可以根据四个状态返回四个函数，将相应操作放入四个函数中。
+		 */
 		private function statusDispatcher(event:Event):void //app状态变化处理函数 
 		{
 			var _status:int = _modelAlarm.appStatus;
