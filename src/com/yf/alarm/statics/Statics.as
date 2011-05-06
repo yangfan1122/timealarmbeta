@@ -27,7 +27,7 @@ package com.yf.alarm.statics
 		
 		//计时 提示
 		static public const countTextInit:String = "00:00";
-		static public const flashingText:String = "该活动活动脖子啦~~";
+		static public const flashingText:String = "该活动活动了~~";
 		static public const selectTimeFailAlert:String = "选择时间错误!";
 		
 		//显示名称
@@ -45,7 +45,7 @@ package com.yf.alarm.statics
 		static public const menuSeparator:String = "menu_separator";
 		
 		//about me
-		static public const aboutMain:String = "关于Time Alarm 0.1.0.1104_beta";
+		static public const aboutMain:String = "关于Time Alarm 0.1.0.1105_beta";//同时修改TimeAlarmBeta-app.xml中版本号
 		static public const aboutMail:String = "yangfan1122@gmail.com";
 		
 		//displayObjects
