@@ -120,10 +120,12 @@ package com.yf.alarm.controller
 			catch (error:Error)
 			{
 				//Alert.show("Error...Could not write SharedObject to disk\n");
+				//Test.a("Error...Could not write SharedObject to disk\n");
 				_modelAlarm.saveSuccess = false;
 			}
 			if (flushStatus != null)
 			{
+				//Test.a("flushStatus="+flushStatus);
 				switch (flushStatus)
 				{
 					case SharedObjectFlushStatus.PENDING:
@@ -145,11 +147,11 @@ package com.yf.alarm.controller
 			switch (event.info.code)
 			{
 				case "SharedObject.Flush.Success":
-					//Alert.show("User granted permission -- value saved.\n");
+					//Test.a("User granted permission -- value saved.\n");
 					sendSetting();
 					break;
 				case "SharedObject.Flush.Failed":
-					//Alert.show("User denied permission -- value not saved.\n");
+					//Test.a("User denied permission -- value not saved.\n");
 					_modelAlarm.saveSuccess = false;
 					break;
 			}

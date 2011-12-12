@@ -45,7 +45,7 @@ package com.yf.alarm.statics
 		static public const menuSeparator:String = "menu_separator";
 		
 		//about me
-		static public const aboutMain:String = "关于Time Alarm 0.1.0.1105_beta";//同时修改TimeAlarmBeta-app.xml中版本号
+		static public const aboutMain:String = "关于Time Alarm 0.1.1.111212";//同时修改TimeAlarmBeta-app.xml中版本号
 		static public const aboutMail:String = "yangfan1122@gmail.com";
 		
 		//displayObjects

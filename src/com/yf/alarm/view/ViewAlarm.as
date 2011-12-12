@@ -81,6 +81,9 @@ package com.yf.alarm.view
 			//下拉菜单选项
 			_thisApp.cb.dataProvider = new ArrayCollection(Statics.timeSelectCollectionData);
 			
+			//读取是否设置开机启动
+			_thisApp.startAtLoginCB.selected = NativeApplication.nativeApplication.startAtLogin;
+			
 			//初始化样式
 			initializationStyle();
 			
