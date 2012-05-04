@@ -27,7 +27,7 @@ package com.yf.alarm.statics
 		
 		//计时 提示
 		static public const countTextInit:String = "00:00";
-		static public const flashingText:String = "该活动活动了~~";
+		static public const flashingText:String = "~";
 		static public const selectTimeFailAlert:String = "选择时间错误!";
 		
 		//显示名称
