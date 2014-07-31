@@ -25,7 +25,7 @@ package com.yf.alarm.view
 	import mx.controls.Alert;
 	
 	import spark.components.CheckBox;
-	import spark.components.ComboBox;
+	import spark.components.DropDownList;
 
 	public class ViewAlarm extends Sprite
 	{
@@ -269,7 +269,7 @@ package com.yf.alarm.view
 		//计时	
 		private function cbHandler(event:Event):void //下拉框选定
 		{
-			timeDelay = ComboBox(event.target).selectedItem.data; //秒
+			timeDelay = DropDownList(event.target).selectedItem.data; //秒
 			_controllerAlarm.cbSelect(timeDelay);// --> C
 		}
 		

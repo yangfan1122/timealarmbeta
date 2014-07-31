@@ -31,8 +31,7 @@
 			</s:HGroup>
 			
 			<s:Label text="选择提醒时长"/>
-			<s:ComboBox id="cb"
-						
+			<s:DropDownList id="cb"
 						width="70"
 						y="100"
 						selectedIndex="0"
