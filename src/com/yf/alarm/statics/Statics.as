@@ -17,7 +17,6 @@ package com.yf.alarm.statics
 		
 		//下拉菜单
 		static public const timeSelectCollectionData:Array = [
-			{label: "选择", data: -1},
 			{label: "3 秒", data: 3},
 			{label: "30 分钟", data: 1800}, 
 			{label: "1 小时", data: 3600},
@@ -46,7 +45,7 @@ package com.yf.alarm.statics
 		static public const menuSeparator:String = "menu_separator";
 		
 		//about me
-		static public const aboutMain:String = "关于Time Alarm 0.1.3";//同时修改TimeAlarmBeta-app.xml中版本号
+		static public const aboutMain:String = "关于Time Alarm 0.2.0";//同时修改TimeAlarmBeta-app.xml中版本号
 		static public const aboutMail:String = "yangfan1122@gmail.com";
 		
 		//displayObjects

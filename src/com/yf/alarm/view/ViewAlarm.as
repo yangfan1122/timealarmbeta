@@ -56,8 +56,8 @@ package com.yf.alarm.view
 		
 		private function init():void
 		{
-			styles();
 			addListeners();
+			styles();
 			addObjects();
 		}
 		private function styles():void
@@ -116,7 +116,8 @@ package com.yf.alarm.view
 			_thisApp.flashingLabel.text="";
 			
 			_thisApp.cb.enabled=true;
-			_thisApp.cb.selectedIndex=0;
+			_thisApp.cb.selectedIndex=3;//默认选中
+			_thisApp.cb.dispatchEvent(new Event(Event.CLOSE));
 			
 			_thisApp.nativeApplication.icon.bitmaps=[new icon()];
 			timerCounter=0;

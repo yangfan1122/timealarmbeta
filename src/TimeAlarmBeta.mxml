@@ -34,7 +34,6 @@
 			<s:DropDownList id="cb"
 						width="70"
 						y="100"
-						selectedIndex="0"
 						labelField="label"
 						/><!-- dataProvider="{timeSelect}"   close="cbHandler(event)" -->
 			
