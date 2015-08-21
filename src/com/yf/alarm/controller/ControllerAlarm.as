@@ -1,26 +1,24 @@
 package com.yf.alarm.controller
 {
 	import com.yf.alarm.Test;
-	import com.yf.alarm.model.ModelAlarm;
 	import com.yf.alarm.controller.count.TransferTime;
+	import com.yf.alarm.controller.count.Utils;
+	import com.yf.alarm.model.ModelAlarm;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	import flash.net.SharedObject;
 	import flash.net.SharedObjectFlushStatus;
+	import flash.utils.Timer;
 
 	public class ControllerAlarm
 	{
 		private var _modelAlarm:ModelAlarm;
-		private var timerShow:Timer=new Timer(1000); //显示计时
-		private var timerShowCounter:int=0; //计时计数器
 		private var timer:Timer=new Timer(500); //闪动频率
 		private var timerCounter:int=0; //闪动标记
 		private var settingShareObject:SharedObject=SharedObject.getLocal("user-setting"); //保存用户设置
-		
 		
 		public function ControllerAlarm(_ma:ModelAlarm)
 		{
@@ -44,34 +42,24 @@ package com.yf.alarm.controller
 		public function calculagraphCtrl(_timeDelay:int):void
 		{
 			_modelAlarm.appStatus = 2;//计数
-			
-			timerShowCounter = _timeDelay;
-			timerShow.addEventListener(TimerEvent.TIMER, timerShowHandler);
-			timerShow.start();
+			Utils.addCountdown(countHandler, _timeDelay);
 		}
-		private function timerShowHandler(event:TimerEvent):void
+
+		private function countHandler(_seconds:Number):void
 		{
-			timerShowCounter-=1;
-			_modelAlarm.timeText = TransferTime.transferTimeHandler(timerShowCounter * 1000);
+			_modelAlarm.timeText = TransferTime.transferTimeHandler(_seconds*1000);
 			
-			if (timerShowCounter == 0)
+			if (_seconds < 0)
 			{
-				timerShow.stop();
-				timerShow.removeEventListener(TimerEvent.TIMER, timerShowHandler);
+				Utils.removeCountdown(countHandler);
 				_modelAlarm.appStatus = 3;//闪动
 			}
 		}
-			
+		
 		public function resetHandler():void //重置
 		{
-			timer.stop();
-			
-			timerShow.stop();
-			timerShowCounter=0;
-			
+			Utils.removeCountdown(countHandler);
 			_modelAlarm.appStatus = 0;
-			
-			timer.removeEventListener(TimerEvent.TIMER, timerCompleteHandler);
 		}
 		
 		// //计时
