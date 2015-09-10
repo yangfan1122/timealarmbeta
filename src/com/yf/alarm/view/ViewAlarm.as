@@ -242,6 +242,7 @@ package com.yf.alarm.view
 			else
 			{
 				calculagraph();
+				minHandler();
 			}
 		}
 		private function resetBtnHandler(event:MouseEvent):void //重置按钮
@@ -251,6 +252,10 @@ package com.yf.alarm.view
 			_controllerAlarm.resetHandler();
 		}
 		private function minBtnHandler(event:MouseEvent):void //最小化按钮
+		{
+			minHandler();
+		}
+		private function minHandler():void
 		{
 			_thisApp.flashingLabel.scaleX = 1;
 			_thisApp.flashingLabel.scaleY = 1;
