@@ -1,6 +1,7 @@
 package com.yf.alarm.controller.count
 {
 	import flash.events.TimerEvent;
+	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 
@@ -13,7 +14,7 @@ package com.yf.alarm.controller.count
 		private static var countdownTimer : Timer = new Timer(300);
 		private static var timestamp : Number = 0;
 		private static var countdowns : Array = [];
-		private static var countdownSeconds : Object = {};
+		private static var countdownSeconds : Dictionary = new Dictionary();
 		
 		public static function addCountdown(method : Function, second : Number) : void {
 			var index:int = countdowns.indexOf(method);
