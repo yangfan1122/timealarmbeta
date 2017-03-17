@@ -7,7 +7,7 @@
 http://get.adobe.com/cn/air/
 从上面地址下载AdobeAIRInstaller.exe并安装
 
-##2.安装TimeAlarmBeta.air
+##2.下载并安装TimeAlarmBeta.air
 
 ##3.使用
 a)先选时长。
