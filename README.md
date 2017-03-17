@@ -9,7 +9,7 @@
 ##2.安装TimeAlarmBeta
 [TimeAlarmBeta](URL 'https://github.com/yangfan1122/timealarmbeta/raw/master/bin-release/TimeAlarmBeta.air')
 
-##3.使用
+##3.使用  
 a)先选时长。  
 b)确定，倒计时，这时候可以点击系统任务栏图标将程序界面收起。  
 c)时间到了后，程序窗口会弹出来，系统任务栏图标闪动，点击重置，可以进行下次计时提醒。
