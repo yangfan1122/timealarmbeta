@@ -3,10 +3,10 @@
 
 定时全屏提醒的PC air客户端小玩意，预防颈椎病~
 
-##1.安装Adobe AIR
+##1.安装Adobe AIR  
 [AdobeAIRInstaller](URL 'https://get.adobe.com/air/?loc=cn')
 
-##2.安装TimeAlarmBeta
+##2.安装TimeAlarmBeta  
 [TimeAlarmBeta](URL 'https://github.com/yangfan1122/timealarmbeta/raw/master/bin-release/TimeAlarmBeta.air')
 
 ##3.使用  
