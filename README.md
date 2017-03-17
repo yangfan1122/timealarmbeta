@@ -6,7 +6,9 @@
 ##1.下载安装环境
 http://get.adobe.com/cn/air/
 从上面地址下载AdobeAIRInstaller.exe并安装
+
 ##2.安装TimeAlarmBeta.air
+
 ##3.使用
 a)先选时长。
 b)确定，倒计时，这时候可以点击系统任务栏图标将程序界面收起。
