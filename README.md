@@ -7,7 +7,7 @@
 [AdobeAIRInstaller](https://get.adobe.com/air/?loc=cn "Adobe AIR")
 
 ##2.安装TimeAlarmBeta  
-[TimeAlarmBeta]|(/bin-release/TimeAlarmBeta.air)
+[TimeAlarmBeta]|(/bin-release)
 
 ##3.使用  
 a)先选时长。  
@@ -23,11 +23,11 @@ c)时间到了后，程序窗口会弹出来，系统任务栏图标闪动，点
 ##0.2.1
 *点击确认后自动最小化窗口。
 
-##0.2.0
+##0.2.0  
 *修改默认时间。  
 *修改倒计时方式。
 
-##0.1.3
+##0.1.3  
 *更换下拉菜单组件。  
 *增加1.5小时 2小时选项，去掉15分钟选项。
 
