@@ -4,7 +4,6 @@
 定时全屏提醒的PC air客户端小玩意，预防颈椎病~
 
 ##1.下载安装环境
-
 http://get.adobe.com/cn/air/
 从上面地址下载AdobeAIRInstaller.exe并安装
 ##2.安装TimeAlarmBeta.air
