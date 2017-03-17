@@ -7,7 +7,7 @@
 [AdobeAIRInstaller](https://get.adobe.com/air/?loc=cn "Adobe AIR")
 
 ##2.安装TimeAlarmBeta  
-[TimeAlarmBeta](./blob/master/bin-release/TimeAlarmBeta.air)
+[TimeAlarmBeta](./bin-release/TimeAlarmBeta.air)
 
 ##3.使用  
 a)先选时长。  
