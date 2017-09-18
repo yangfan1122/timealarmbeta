@@ -43,6 +43,7 @@ package com.yf.alarm.view
 		
 		private var aboutme:Aboutme=new Aboutme();
 		private var timeDelay:int=-1; //选定的延迟时间
+		private var selectedStore:int;//存储下拉框的选项索引
 
 		
 		public function ViewAlarm(_this:Object, _modelalarm:ModelAlarm, _controlleralarm:ControllerAlarm)
@@ -51,11 +52,13 @@ package com.yf.alarm.view
 			_modelAlarm = _modelalarm;
 			_controllerAlarm = _controlleralarm;
 			
-			init();
+			_modelAlarm.addEventListener(Statics.VIEW_INIT, init);
+			_controllerAlarm.init();
 		}
 		
-		private function init():void
+		public function init(event:Event):void
 		{
+			_modelAlarm.removeEventListener(Statics.VIEW_INIT, init);
 			addListeners();
 			styles();
 			addObjects();
@@ -98,6 +101,7 @@ package com.yf.alarm.view
 			_thisApp.cb.addEventListener(Event.CLOSE, cbHandler);//菜单
 			
 			_modelAlarm.addEventListener(Statics.CHANGE_APPSTATUS, statusDispatcher);//app状态处理函数
+			_modelAlarm.addEventListener(Statics.STORE_INDEX, storeIndexHandler);
 		}
 		private function addObjects():void
 		{
@@ -116,8 +120,6 @@ package com.yf.alarm.view
 			_thisApp.flashingLabel.text="";
 			
 			_thisApp.cb.enabled=true;
-			_thisApp.cb.selectedIndex=3;//默认选中
-			_thisApp.cb.dispatchEvent(new Event(Event.CLOSE));
 			
 			_thisApp.nativeApplication.icon.bitmaps=[new icon()];
 			timerCounter=0;
@@ -274,8 +276,9 @@ package com.yf.alarm.view
 		
 		//计时	
 		private function cbHandler(event:Event):void //下拉框选定
-		{
-			timeDelay = DropDownList(event.target).selectedItem.data; //秒
+		{			
+			timeDelay = DropDownList(event.target).selectedItem.data;
+			_controllerAlarm.storeSelectedIndex(DropDownList(event.target).selectedIndex);
 			_controllerAlarm.cbSelect(timeDelay);// --> C
 		}
 		
@@ -468,6 +471,12 @@ package com.yf.alarm.view
 		}
 		// //setting
 		
+		
+		private function storeIndexHandler(event:Event):void {
+			_thisApp.cb.selectedIndex = _modelAlarm.selectedIndex;
+			_thisApp.cb.enabled=true;
+			_thisApp.cb.dispatchEvent(new Event(Event.CLOSE));
+		}
 		
 	}
 }

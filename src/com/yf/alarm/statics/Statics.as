@@ -11,7 +11,8 @@ package com.yf.alarm.statics
 		static public const CHANGE_TIME_TEXT:String = "change_time_text";
 		static public const CHANGE_ICON:String = "change_icon";
 		static public const SAVE_SETTING_SUCCESS:String = "save_setting_success";
-		
+		public static const STORE_INDEX:String = "store_index";
+		public static const VIEW_INIT:String = "VIEW_INIT";
 		static public const CLOSE_WINDOW:String = "CLOSE_WINDOW";
 		
 		
@@ -45,7 +46,7 @@ package com.yf.alarm.statics
 		static public const menuSeparator:String = "menu_separator";
 		
 		//about me
-		static public const aboutMain:String = "关于Time Alarm 0.2.2";//同时修改TimeAlarmBeta-app.xml中版本号
+		static public const aboutMain:String = "关于Time Alarm 0.3.0";//同时修改TimeAlarmBeta-app.xml中版本号
 		static public const aboutMail:String = "yangfan1122@gmail.com";
 		
 		//displayObjects

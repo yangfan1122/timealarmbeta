@@ -18,11 +18,25 @@ package com.yf.alarm.model
 		private var _icon:int;
 		private var _startAtLogin:Boolean;//启动否
 		private var _saveSuccess:Boolean;//保存存成功
+		private var _selectedIndex:int;//下拉菜单索引
 		
 		public function ModelAlarm()
 		{
 		}
 		
+		private var _viewInit:Boolean = true;
+		public function set viewInit(set:Boolean):void {
+			_viewInit = set;
+			this.dispatchEvent(new Event(Statics.VIEW_INIT));
+		}
+			
+		public function get selectedIndex():int {
+			return this._selectedIndex;
+		}
+		public function set selectedIndex(index:int):void {
+			this._selectedIndex = index;
+			dispatchEvent(new Event(Statics.STORE_INDEX));
+		}
 
 		
 		//显示倒计时

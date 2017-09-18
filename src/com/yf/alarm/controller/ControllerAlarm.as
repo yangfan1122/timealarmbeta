@@ -22,9 +22,26 @@ package com.yf.alarm.controller
 		
 		public function ControllerAlarm(_ma:ModelAlarm)
 		{
-			_modelAlarm = _ma;
+			_modelAlarm = _ma;			
 		}
 		
+		public function init():void {
+			this._modelAlarm.viewInit = true;
+			if(settingShareObject.data.hasOwnProperty("selectedIndex")) {
+				_modelAlarm.selectedIndex = settingShareObject.data.selectedIndex;
+			} else {
+				_modelAlarm.selectedIndex = 3;
+			}
+		}
+		
+		/**
+		 * 保存下拉菜单索引 
+		 * @param index
+		 * 
+		 */		
+		public function storeSelectedIndex(index:int):void {
+			settingShareObject.data.selectedIndex = index;
+		}
 		
 		//计时
 		public function cbSelect(_timeDelay:int):void
@@ -107,21 +124,16 @@ package com.yf.alarm.controller
 			}
 			catch (error:Error)
 			{
-				//Alert.show("Error...Could not write SharedObject to disk\n");
-				//Test.a("Error...Could not write SharedObject to disk\n");
 				_modelAlarm.saveSuccess = false;
 			}
 			if (flushStatus != null)
 			{
-				//Test.a("flushStatus="+flushStatus);
 				switch (flushStatus)
 				{
 					case SharedObjectFlushStatus.PENDING:
-						//Alert.show("Requesting permission to save object...\n");
 						settingShareObject.addEventListener(NetStatusEvent.NET_STATUS, onFlushStatus);
 						break;
 					case SharedObjectFlushStatus.FLUSHED:
-						//Alert.show("Value flushed to disk.\n");
 						sendSetting();
 						break;
 				}
@@ -131,15 +143,12 @@ package com.yf.alarm.controller
 		
 		private function onFlushStatus(event:NetStatusEvent):void
 		{
-			//Alert.show("User closed permission dialog...\n");
 			switch (event.info.code)
 			{
 				case "SharedObject.Flush.Success":
-					//Test.a("User granted permission -- value saved.\n");
 					sendSetting();
 					break;
 				case "SharedObject.Flush.Failed":
-					//Test.a("User denied permission -- value not saved.\n");
 					_modelAlarm.saveSuccess = false;
 					break;
 			}
