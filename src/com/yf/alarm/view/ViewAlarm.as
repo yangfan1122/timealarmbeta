@@ -111,8 +111,8 @@ package com.yf.alarm.view
 		//styles
 		private function initializationStyle():void //初始
 		{
-			_thisApp.confirmBtn.mouseEnabled=false;
-			_thisApp.confirmBtn.alpha=.5;
+			_thisApp.confirmBtn.mouseEnabled=true;
+			_thisApp.confirmBtn.alpha=1;
 			_thisApp.resetBtn.mouseEnabled=false;
 			_thisApp.resetBtn.alpha=.5;
 			
@@ -176,6 +176,7 @@ package com.yf.alarm.view
 					_thisApp.resetBtn.removeEventListener(MouseEvent.CLICK, resetBtnHandler);
 					_thisApp.nativeWindow.removeEventListener(Event.RESIZE, resizeHandler);//监听全屏变化
 					_thisApp.cb.addEventListener(Event.CLOSE, cbHandler);
+					_thisApp.confirmBtn.addEventListener(MouseEvent.CLICK, confirmBtnHandler);
 					
 					initializationStyle();
 					break;
